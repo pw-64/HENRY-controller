@@ -9,7 +9,7 @@ The process is:
 graph
 off[Power Off] -- "Turn On (Power Connected / Reset Pin)" ---> Initialisation
 Initialisation --> Pump & Vent
-Pump <--> Vent
+Pump <---> Vent
 Pump --> Heat --> Vent
-Pump -- Turn Off --> off
+Pump -- Turn Off --> pumps_off[Scroll Pump Off & Turbo Spindown] --> Pump & Vent
 ```
