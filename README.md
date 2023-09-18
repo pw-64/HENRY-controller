@@ -13,3 +13,26 @@ Pump <---> Vent
 Pump --> Heat --> Vent
 Pump -- Turn Off --> pumps_off[Scroll Pump Off & Turbo Spindown] --> Pump & Vent
 ```
+
+# Pictures
+![Filling In Unused Button](https://github.com/pw-64/HENRY-controller/blob/main/Photos/After%20Filling%20In%20Unused%20Button.jpg)
+![After Pumping](https://github.com/pw-64/HENRY-controller/blob/main/Photos/After%20Pumping.jpg)
+![Breadboard 1](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Breadboard%201.jpg)
+![Breadboard 2](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Breadboard%202.jpg)
+![Front Panel Testing](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Front%20Panel%20Testing.jpg)
+![Inside The HENRY](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Inside%20The%20HENRY.jpg)
+![Pump Example](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Pump%20Example.jpg)
+![Turbo Spindown 1](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Turbo%20Spindown%201.jpg)
+![Turbo Spindown 2](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Turbo%20Spindown%202.jpeg)
+![Wiring 1](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Wiring%201.jpg)
+![Wiring 2](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Wiring%202.jpg))https://github.com/pw-64/HENRY-controller/blob/main/Photos/After%20Filling%20In%20Unused%20Button.jpg
+![After Pumping](https://github.com/pw-64/HENRY-controller/blob/main/Photos/After%20Pumping.jpg)
+![Breadboard 1](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Breadboard%201.jpg)
+![Breadboard 2](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Breadboard%202.jpg)
+![Front Panel Testing](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Front%20Panel%20Testing.jpg)
+![Inside The HENRY](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Inside%20The%20HENRY.jpg)
+![Pump Example](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Pump%20Example.jpg)
+![Turbo Spindown 1](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Turbo%20Spindown%201.jpg)
+![Turbo Spindown 2](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Turbo%20Spindown%202.jpeg)
+![Wiring 1](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Wiring%201.jpg)
+![Wiring 2](https://github.com/pw-64/HENRY-controller/blob/main/Photos/Wiring%202.jpg)
