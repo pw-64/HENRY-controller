@@ -9,16 +9,18 @@
 // font size, ~ characters per line: 8,80  12,57  16,36  20,28  24,23
 
 // button prompts
-#define POWER_BUTTON  btn_prompt(80, 80 - 32, "STANDBY");
-#define VENT_BUTTON   btn_prompt(160, 160 - 13, "VENT");
-#define PUMP_BUTTON   btn_prompt(240, 240 - 13, "PUMP");
-#define HEAT_BUTTON   btn_prompt(320, 320 - 13, "HEAT");
+#define BTN_START 120
+#define BTN_INC    72
+#define POWER_BUTTON  btn_prompt(BTN_START,               BTN_START - 32,            "STANDBY");
+#define VENT_BUTTON   btn_prompt(BTN_START + BTN_INC,     BTN_START + BTN_INC - 13,     "VENT");
+#define PUMP_BUTTON   btn_prompt(BTN_START + BTN_INC * 2, BTN_START + BTN_INC * 2 - 13, "PUMP");
+#define HEAT_BUTTON   btn_prompt(BTN_START + BTN_INC * 3, BTN_START + BTN_INC * 3 - 13, "HEAT");
 
 // buttons shown on display
 bool power_button_shown = false;
-bool vent_button_shown = false;
-bool pump_button_shown = false;
-bool heat_button_shown = false;
+bool vent_button_shown  = false;
+bool pump_button_shown  = false;
+bool heat_button_shown  = false;
 
 // PINS
 /// sensors
@@ -66,7 +68,7 @@ Paint btn_canvas   (2000, 8*50, 41);
 void ClearTitleCanvas() {title_canvas.Clear(WHITE);}
 void PlaceTitleCanvas(int y_pos) {epd.SetPartialWindow(title_canvas.GetImage(), 0, y_pos, title_canvas.GetWidth(), title_canvas.GetHeight());}
 void ClearInfoCanvas() {info_canvas.Clear(WHITE);}
-void PlaceInfoCanvas(int y_pos) {epd.SetPartialWindow(info_canvas.GetImage(), 0, y_pos, info_canvas.GetWidth(), info_canvas.GetHeight());}
+void PlaceInfoCanvas(int y_pos) {epd.SetPartialWindow(info_canvas.GetImage(), 10, y_pos, info_canvas.GetWidth(), info_canvas.GetHeight());}
 void ClearTimerCanvas() {timer_canvas.Clear(WHITE);}
 void PlaceTimerCanvas(int y_pos) {epd.SetPartialWindow(timer_canvas.GetImage(), 0, y_pos, timer_canvas.GetWidth(), timer_canvas.GetHeight());}
 void ClearBtnCanvas() {btn_canvas.Clear(WHITE);}
@@ -81,6 +83,8 @@ void btn_prompt(int arrow_x_offset, int x_pos, char message[], int x_pos_line2 =
   btn_canvas.DrawStringAt(arrow_x_offset, 24, "V", &Font24, BLACK);
 }
 void reset_btns() {
+  // turnoff_btn = false;
+  // reset_btn = false;
   power_button_shown = false;
   vent_button_shown = false;
   pump_button_shown = false;
@@ -236,7 +240,7 @@ void vent() {
   closeAllValves(); // reset all valves back to closed
   display("- Finished Venting");
 
-  // prompts the user to select a function: VENT or PUMP
+  // prompts the user to select a function: PUMP
   int selectedFunction = 0;
   reset_btns();
   pump_button_shown = true;
@@ -259,15 +263,16 @@ void pump() {
   display("- Pumping to level 1 vacuum ...");
   digitalWrite(scrollPumpRelay, HIGH); // turn on the scroll pump
 
-  waitForVacuumSensorReading(600, HIGH); // wait until the vacuum reaches a level low enough where the door is able to be opened
+  waitForVacuumSensorReading(460, HIGH); // wait until the vacuum reaches a level low enough where the door is able to be opened
   openValve(valve_C_hold, valve_C_trigger);
 
-  waitForVacuumSensorReading(600, HIGH, false);
+  waitForVacuumSensorReading(460, HIGH, false);
   display("- Level 1 vacuum reached");
   display("- Waiting to pump to level 2 vacuum ...");
 
   // close A, open B, turn turbo relay on
   closeValve(valve_A_hold);
+  delay(1500);
   openValve(valve_B_hold, valve_B_trigger);
   // if the turbo is already on, don't pulse the switch again otherwise it will turn off
   if (!turboPumpOn) {
@@ -276,7 +281,7 @@ void pump() {
   }
 
   // code to detect when the turbo is at the right speed (by measuring when it starts to pull a greater vacuum)
-  while (analogRead(vacuumSensorPin) > 450) {
+  while (analogRead(vacuumSensorPin) > 440) {
     digitalWrite(turboPumpStatusIndicator, HIGH); delay(300);
     digitalWrite(turboPumpStatusIndicator, LOW); delay(300);
   }
@@ -284,7 +289,7 @@ void pump() {
   display("- Turbo Pump At Sufficient Speed");
   display("- Pumping to level 2 vacuum ...");
 
-  waitForVacuumSensorReading(100, HIGH);
+  waitForVacuumSensorReading(290, HIGH);
   display("- Level 2 vacuum reached");
 
   // chamber is fully pumped to maximum vacuum, prompts the user to select another function: VENT or HEAT
@@ -327,7 +332,7 @@ void ShowTimer(int mins, int secs) {
 
 void Timer() {
   const float display_refresh_time = 5.5;
-  const int update_interval = 10;
+  const int update_interval = 30;
   int timer_mins = 15;
   int timer_secs = 0;
   while (timer_mins >= 0) {
@@ -359,6 +364,14 @@ void setup() {
   // Serial.end();
 
   Serial.println("START");
+
+  // reset_btns();
+  // power_button_shown = true;
+  // vent_button_shown = true;
+  // pump_button_shown = true;
+  // heat_button_shown = true;
+  // display("Showing All Buttons");
+  // while (true) {}
 
   display("Starting ...");
   // Initialising I/O
