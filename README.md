@@ -4,7 +4,7 @@ An arduino program to control solenoid valves and vacuum pumps on a microscope s
 
 When turned on, it presents messages to the user in the top area, and button choices in the lower area. After choosing a function, the arduino controls the physical machinery such as firing relays. Throughout the process, messages are pushed to the screen to indicate the current status. Upon completion, the controller will pick different functions to be available.
 
-There is a seperate arduino running the [vacuum monitor](https://github.com/pw-64/vacuum-monitor) which uses the same sensor reading as this program, to quickly provide a visual indication of the vacuum level.
+There is a seperate arduino running the [vacuum monitor](https://github.com/pw-64/vacuum-monitor), which uses the same sensor reading as this program to quickly provide a visual indication of the vacuum level.
 
 The process is:
 ```mermaid
