@@ -389,7 +389,6 @@ void setup() {
   initPinOutput(heatingIndicatorAndRelay, LOW);
   // Scroll pump and Turbo Pump
   initPinOutput(scrollPumpRelay, LOW);
-  initPinOutput(scrollPumpOffIndicator, HIGH);
   initPinOutput(turboPumpStatusIndicator, LOW);
   initPinOutput(turboPumpPower, LOW);
   // Buttons
