@@ -168,7 +168,15 @@ void waitForVacuumSensorReading(int targetReading, bool startState, bool show_me
   }
 }
 
-void pulseTurboActivateSwitch() {digitalWrite(turboPumpPower, LOW); delay(500); digitalWrite(turboPumpPower, HIGH); delay(500); digitalWrite(turboPumpPower, LOW);} // for the turbo pump relay just toggle the button "HIGH,short delay,LOW" to simulate a button press
+// for the turbo pump relay just toggle the button "HIGH,short delay,LOW" to simulate a button press (and update the turboPumpOn variable)
+void pulseTurboActivateSwitch() {
+  digitalWrite(turboPumpPower, LOW);
+  delay(500);
+  digitalWrite(turboPumpPower, HIGH);
+  delay(500);
+  digitalWrite(turboPumpPower, LOW);
+  turboPumpOn = !turboPumpOn;
+}
 
 void openValve(int hold, int trigger) {
   digitalWrite(hold, HIGH);
@@ -189,9 +197,11 @@ void closeAllValves() {
 
 // close all the valves and then turn off power to both pumps; the chamber stays at vacuum / air but the system is ready for the next person
 void turnOff() {
-  display("Turning Off Pumps ...");
   closeAllValves(); // close all valves
-  digitalWrite(scrollPumpRelay, LOW); pulseTurboActivateSwitch(); digitalWrite(turboPumpStatusIndicator, LOW); // turn off both pumps
+  display("Turning Off Pumps ...");
+  digitalWrite(scrollPumpRelay, LOW);
+  pulseTurboActivateSwitch();
+  digitalWrite(turboPumpStatusIndicator, LOW); // turn off both pumps
   Timer(); // let the turbo spool down
 }
 
@@ -257,18 +267,24 @@ void vent() {
 void pump() {
   display("Pumping");
   closeAllValves(); // make sure all the valves are closed
-  // open valves A and C
+  // open valves A (and C if turbo is off)
   openValve(valve_A_hold, valve_A_trigger);
-  delay(500);
-  openValve(valve_C_hold, valve_C_trigger);
+  if (!turboPumpOn) {
+    delay(500);
+    openValve(valve_C_hold, valve_C_trigger);
+    Serial.println("DEBUG: turbo pump off, opened valve C with valve A");
+  }
 
   display("- Pumping to level 1 vacuum ...");
   digitalWrite(scrollPumpRelay, HIGH); // turn on the scroll pump
 
-//   waitForVacuumSensorReading(460, HIGH); // wait until the vacuum reaches a level low enough where the door is able to be opened
-//   openValve(valve_C_hold, valve_C_trigger);
+  Serial.println("DEBUG: first vacuum reading wait start");
+  waitForVacuumSensorReading(460, HIGH); // wait until the vacuum reaches a level low enough where the door is able to be opened
+  openValve(valve_C_hold, valve_C_trigger);
+  Serial.println("DEBUG: opened valve C");
 
-  waitForVacuumSensorReading(460, HIGH);//, false);
+  Serial.println("DEBUG: second vacuum reading wait start");
+  waitForVacuumSensorReading(460, HIGH, false); // COMMENT OUT THIS LINE IF GETTING STUCK FOR A WHILE (longer than normal to pump down)
   display("- Level 1 vacuum reached");
   display("- Waiting to pump to level 2 vacuum ...");
 
@@ -279,7 +295,6 @@ void pump() {
   // if the turbo is already on, don't pulse the switch again otherwise it will turn off
   if (!turboPumpOn) {
     pulseTurboActivateSwitch();
-    turboPumpOn = true;
   }
 
   // code to detect when the turbo is at the right speed (by measuring when it starts to pull a greater vacuum)
