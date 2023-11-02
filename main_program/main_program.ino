@@ -168,7 +168,16 @@ void waitForVacuumSensorReading(int targetReading, bool startState, bool show_me
   }
 }
 
-void pulseTurboActivateSwitch() {digitalWrite(turboPumpPower, LOW); delay(500); digitalWrite(turboPumpPower, HIGH); delay(500); digitalWrite(turboPumpPower, LOW);} // for the turbo pump relay just toggle the button "HIGH,short delay,LOW" to simulate a button press
+// for the turbo pump relay just toggle the button "HIGH,short delay,LOW" to simulate a button press (and update the turboPumpOn variable)
+void pulseTurboActivateSwitch() {
+  digitalWrite(turboPumpPower, LOW);
+  delay(500);
+  digitalWrite(turboPumpPower, HIGH);
+  delay(500);
+  digitalWrite(turboPumpPower, LOW);
+  turboPumpOn = !turboPumpOn;
+}
+
 
 void openValve(int hold, int trigger) {
   digitalWrite(hold, HIGH);
