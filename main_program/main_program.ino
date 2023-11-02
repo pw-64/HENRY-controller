@@ -197,11 +197,18 @@ void closeAllValves() {
 
 // close all the valves and then turn off power to both pumps; the chamber stays at vacuum / air but the system is ready for the next person
 void turnOff() {
-  closeAllValves(); // close all valves
   display("Turning Off Pumps ...");
+  closeValve(valve_A_hold);
+  delay(1000);
+  closeValve(valve_B_hold);
+  delay(1000);
+  closeValve(valve_C_hold);
+  delay(1000);
   digitalWrite(scrollPumpRelay, LOW);
+  delay(1000);
   pulseTurboActivateSwitch();
   digitalWrite(turboPumpStatusIndicator, LOW); // turn off both pumps
+  delay(1000);
   Timer(); // let the turbo spool down
 }
 
@@ -267,24 +274,15 @@ void vent() {
 void pump() {
   display("Pumping");
   closeAllValves(); // make sure all the valves are closed
-  // open valves A (and C if turbo is off)
+  // open valves A and C
   openValve(valve_A_hold, valve_A_trigger);
-  if (!turboPumpOn) {
-    delay(500);
-    openValve(valve_C_hold, valve_C_trigger);
-    Serial.println("DEBUG: turbo pump off, opened valve C with valve A");
-  }
+  delay(500);
+  openValve(valve_C_hold, valve_C_trigger);
 
   display("- Pumping to level 1 vacuum ...");
   digitalWrite(scrollPumpRelay, HIGH); // turn on the scroll pump
 
-  Serial.println("DEBUG: first vacuum reading wait start");
-  waitForVacuumSensorReading(460, HIGH); // wait until the vacuum reaches a level low enough where the door is able to be opened
-  openValve(valve_C_hold, valve_C_trigger);
-  Serial.println("DEBUG: opened valve C");
-
-  Serial.println("DEBUG: second vacuum reading wait start");
-  waitForVacuumSensorReading(460, HIGH, false); // COMMENT OUT THIS LINE IF GETTING STUCK FOR A WHILE (longer than normal to pump down)
+  waitForVacuumSensorReading(460, HIGH);
   display("- Level 1 vacuum reached");
   display("- Waiting to pump to level 2 vacuum ...");
 
