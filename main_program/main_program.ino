@@ -178,7 +178,6 @@ void pulseTurboActivateSwitch() {
   turboPumpOn = !turboPumpOn;
 }
 
-
 void openValve(int hold, int trigger) {
   digitalWrite(hold, HIGH);
   delay(1000);
@@ -294,7 +293,6 @@ void pump() {
   // if the turbo is already on, don't pulse the switch again otherwise it will turn off
   if (!turboPumpOn) {
     pulseTurboActivateSwitch();
-    turboPumpOn = true;
   }
 
   // code to detect when the turbo is at the right speed (by measuring when it starts to pull a greater vacuum)
