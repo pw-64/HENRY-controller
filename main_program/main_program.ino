@@ -268,14 +268,13 @@ void pump() {
   closeAllValves(); // make sure all the valves are closed
   // open valves A and C
   openValve(valve_A_hold, valve_A_trigger);
+  delay(500);
+  openValve(valve_C_hold, valve_C_trigger);
 
   display("- Pumping to level 1 vacuum ...");
   digitalWrite(scrollPumpRelay, HIGH); // turn on the scroll pump
 
-  waitForVacuumSensorReading(460, HIGH); // wait until the vacuum reaches a level low enough where the door is able to be opened
-  openValve(valve_C_hold, valve_C_trigger);
-
-  waitForVacuumSensorReading(460, HIGH, false);
+  waitForVacuumSensorReading(460, HIGH);
   display("- Level 1 vacuum reached");
   display("- Waiting to pump to level 2 vacuum ...");
 
