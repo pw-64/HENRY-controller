@@ -199,8 +199,17 @@ void closeAllValves() {
 // close all the valves and then turn off power to both pumps; the chamber stays at vacuum / air but the system is ready for the next person
 void turnOff() {
   display("Turning Off Pumps ...");
-  closeAllValves(); // close all valves
-  digitalWrite(scrollPumpRelay, LOW); pulseTurboActivateSwitch(); digitalWrite(turboPumpStatusIndicator, LOW); // turn off both pumps
+  closeValve(valve_A_hold);
+  delay(1000);
+  closeValve(valve_B_hold);
+  delay(1000);
+  closeValve(valve_C_hold);
+  delay(1000);
+  digitalWrite(scrollPumpRelay, LOW);
+  delay(1000);
+  pulseTurboActivateSwitch();
+  digitalWrite(turboPumpStatusIndicator, LOW); // turn off both pumps
+  delay(1000);
   Timer(); // let the turbo spool down
 }
 
